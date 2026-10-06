@@ -1,22 +1,23 @@
 # DevBox machine record
 
-- captured_utc: 2026-10-06T19:42:48Z
+- captured_utc: 2026-10-06T20:07:32Z
 - hostname: DevBox
 - os: Debian GNU/Linux 13 (trixie)
 - kernel: Linux 6.12.107+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.107-1 (2026-08-29) x86_64
 - public_ip: 69.33.213.198
 - local_addrs: 10.124.73.108 172.17.0.1 
+- machine_id: ed4b956df006444e8b92d88521afbb73
 
 ## resources
 ```
                total        used        free      shared  buff/cache   available
-Mem:           3.8Gi       1.0Gi       615Mi       9.4Mi       2.6Gi       2.8Gi
-Swap:          4.0Gi       2.2Gi       1.8Gi
+Mem:           3.8Gi       744Mi       119Mi        40Ki       3.3Gi       3.1Gi
+Swap:          4.0Gi       2.3Gi       1.7Gi
 
 Filesystem     Type      Size  Used Avail Use% Mounted on
 udev           devtmpfs  1.9G     0  1.9G   0% /dev
 tmpfs          tmpfs     393M  744K  392M   1% /run
-/dev/sda1      ext4       40G   12G   26G  32% /
+/dev/sda1      ext4       40G   17G   22G  44% /
 tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm
 tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
 tmpfs          tmpfs     2.0G  2.0G     0 100% /tmp
@@ -27,7 +28,7 @@ tmpfs          tmpfs     1.0M     0  1.0M   0% /run/credentials/getty@tty1.servi
 tmpfs          tmpfs     393M  4.0K  393M   1% /run/user/0
 tmpfs          tmpfs     1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
 tmpfs          tmpfs     1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
-overlay        overlay    40G   12G   26G  32% /var/lib/docker/rootfs/overlayfs/82588dd7b59c2d72826b113b7b2976d6dbb2fca45428dfe733d23987852b622c
+overlay        overlay    40G   17G   22G  44% /var/lib/docker/rootfs/overlayfs/82588dd7b59c2d72826b113b7b2976d6dbb2fca45428dfe733d23987852b622c
 
 NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
 sda       8:0    0   40G  0 disk 
@@ -35,11 +36,21 @@ sda       8:0    0   40G  0 disk
 ├─sda14   8:14   0    3M  0 part 
 └─sda15   8:15   0  124M  0 part /boot/efi
 sdb       8:16   0    1M  0 disk 
+
+## disk usage by top-level dir
+5.6M	/etc
+2.7G	/usr
+7.5G	/var
+1.5G	/root
+811M	/home
+16K	/opt
+4.0K	/srv
+117M	/boot
 ```
 
 ## uptime
 ```
- 19:42:49 up 34 days, 16:48,  3 users,  load average: 0.00, 0.06, 0.05
+ 20:07:51 up 34 days, 17:13,  3 users,  load average: 1.03, 0.66, 0.51
 ```
 
 ## listening
@@ -70,6 +81,12 @@ tcp   LISTEN 0      4096                 [::]:5355          [::]:*    users:(("s
 ```
 CONTAINER ID   IMAGE                      COMMAND                  CREATED      STATUS                  PORTS     NAMES
 82588dd7b59c   v2fly/v2fly-core:v4.45.2   "sh -c '/usr/local/s…"   6 days ago   Up 6 days (unhealthy)             mcpv2
+```
+
+## images
+```
+IMAGE                      ID             DISK USAGE   CONTENT SIZE   EXTRA
+v2fly/v2fly-core:v4.45.2   e81a0735f724       70.1MB         17.9MB   U    
 ```
 
 ## cron
@@ -127,4 +144,14 @@ man-db.timer                         enabled enabled
 ```
 net.ipv4.tcp_congestion_control = bbr
 net.core.default_qdisc = fq
+```
+
+## archives
+```
+total 234692
+-rw-r--r-- 1 root root 107581481 Oct  6 20:07 boot.tar.gz
+-rw-r--r-- 1 root root    606247 Oct  6 20:07 etc.tar.gz
+-rw-r--r-- 1 root root       180 Oct  6 20:07 opt-srv.tar.gz
+-rw-r--r-- 1 root root 132120576 Oct  6 20:07 root-home.tar.gz
+-rw-r--r-- 1 root root      2095 Oct  6 20:07 usr-local.tar.gz
 ```

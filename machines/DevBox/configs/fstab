@@ -1,0 +1,4 @@
+PARTUUID=d3f351d7-6a77-4479-94f4-4ede3b987d00 / ext4 rw,discard,errors=remount-ro,x-systemd.growfs 0 1
+PARTUUID=712b75ac-83f1-42fd-a8b1-a86c8a6588a1 /boot/efi vfat defaults,umask=077 0 2
+
+/swapfile none swap sw 0 0
