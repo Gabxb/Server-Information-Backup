@@ -1,0 +1,14 @@
+[Unit]
+Description=nftables logging of TCP/UDP port probes for fail2ban
+After=network-pre.target
+Wants=network-pre.target
+Before=fail2ban.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/f2b-portscan-log.sh
+ExecStop=/usr/sbin/nft delete table inet f2b-pscan
+
+[Install]
+WantedBy=multi-user.target

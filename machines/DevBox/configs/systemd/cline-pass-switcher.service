@@ -1,0 +1,20 @@
+[Unit]
+Description=cline-pass-switcher (pin DeepSeek V4.1 Flash to Vercel deepseek)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/.cline-pass-switcher
+Environment=DATA_DIR=/root/.cline-pass-switcher
+Environment=PORT=3123
+Environment=BIND_HOST=127.0.0.1
+ExecStart=/usr/bin/node /root/.cline-pass-switcher/src/server.js
+Restart=always
+RestartSec=2
+StandardOutput=append:/root/.cline-pass-switcher/switcher.log
+StandardError=append:/root/.cline-pass-switcher/switcher.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,31 @@
+[DEFAULT]
+bantime  = 15d
+findtime = 10m
+maxretry = 5
+# Never ban localhost or IPs that have successfully logged in as admin.
+ignoreip = 127.0.0.1/8 ::1 117.152.196.132 121.60.119.195 172.59.196.67 172.59.196.241 69.33.213.198
+banaction = nftables
+banaction_allports = nftables[type=allports]
+backend = systemd
+
+[sshd]
+enabled  = true
+port     = 22
+filter   = sshd[mode=aggressive]
+backend  = systemd
+journalmatch = _SYSTEMD_UNIT=ssh.service + _COMM=sshd
+maxretry = 5
+findtime = 10m
+bantime  = 15d
+
+# TCP/UDP probes to ports other than SSH and the proxy listeners
+# (22, 443, 8080 are accepted before the log rule).
+[portscan]
+enabled  = true
+filter   = portscan
+backend  = systemd
+journalmatch = _TRANSPORT=kernel
+banaction = %(banaction_allports)s
+maxretry = 8
+findtime = 10m
+bantime  = 15d

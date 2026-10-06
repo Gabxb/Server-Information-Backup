@@ -1,0 +1,3 @@
+[DEFAULT]
+# Keep ban records longer than the 15-day bantime so they survive restarts.
+dbpurgeage = 30d

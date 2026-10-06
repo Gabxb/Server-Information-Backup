@@ -1,0 +1,2 @@
+42 6 * * 3 docker restart mcpv2
+12 * * * * /usr/local/sbin/vless-healthcheck.sh
