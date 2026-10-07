@@ -159,7 +159,32 @@
 
 ---
 
-## 六、使用方法
+## 六、下载与 Release
+
+本机备份有两种获取方式。
+
+**方式一：Release 资产（推荐，完整未分片）**
+
+https://github.com/Gabxb/Server-Information-Backup/releases/tag/DevBox-2026-10-06
+
+```bash
+curl -LO https://github.com/Gabxb/Server-Information-Backup/releases/download/DevBox-2026-10-06/root-home.tar.gz
+curl -LO https://github.com/Gabxb/Server-Information-Backup/releases/download/DevBox-2026-10-06/SHA256SUMS
+sha256sum -c SHA256SUMS
+```
+
+Release 资产是完整文件，直接 `tar -xzf` 即可，不需要拼接。
+
+**方式二：Git 仓库（适合看配置）**
+
+```bash
+git clone https://github.com/Gabxb/Server-Information-Backup.git
+cd "Server-Information-Backup/machines/69.33.213.198 · DevBox"
+```
+
+git 中的大归档按 90 MB 切片，需先 `cd archives && ./reassemble.sh` 还原。
+
+## 七、使用方法
 
 ### 还原归档
 
@@ -219,7 +244,34 @@ tail -20 /var/log/vless-healthcheck.log
 
 ---
 
-## 七、备注
+## 八、备注
 
 - 本备份按“不考虑安全性”导出，`configs/mcp-shx/.env` 内含面板 token，SSH 与各类密钥均原样保存。
 - 恢复系统级配置请在相同或更高版本的 Debian 上进行，并对软件包与内核差异做人工确认。
+
+---
+
+## 九、可优化建议（上帝视角）
+
+按重要性排序，供后续备份或其他机器参考。
+
+### 备份本身
+
+1. **用 Release 资产替代仓库内切片**：本次已同时提供 Release 完整整包。切片是为了绕开 git 的 100 MB 限制，但会让仓库体积翻倍、clone 变慢。后续可考虑大归档只走 Release，git 只留 `configs/` 与文档。
+2. **归档体积可再压缩**：当前排除项已较合理。`grok-config.tar.gz` 中 `/root/.grok/downloads/grok-linux-x86_64` 是 166 MB 的单个二进制，属可再下载内容，可单独排除。
+3. **`var.tar.gz` 明确排除 `/var/log`**：日志 200 MB 且无还原价值，建议并入排除列表。
+4. **补 Docker 镜像清单**：`docker save v2fly/v2fly-core:v4.45.2` 可离线带镜像（约 70 MB）；目前只备份了 `docker-compose.yml` 与程序，重建时仍需拉镜像。
+5. **补一处未覆盖的远端**：`/home/dev/claude/prompt-orchestration-engine` 的 remote 指向 `idlm/prompt-orchestration-engine`，但该仓库在 GitHub 上**不存在**（404），说明此项目从未上传。源文件在 `home-dev.tar.gz` 里，若要长期保存需要另建远端。
+6. **加一键备份脚本**：把本次的采集步骤固化为脚本入库，换机器时直接跑，避免每次手写命令与遗漏。
+
+### 运维
+
+7. **`mcpv2` 的凭据轮换更集中**：`.env` 里的 `token=9vjc4n`、`nodeId` 与 REALITY 私钥分散在多处，重建时容易漏。建议在 `configs/mcp-shx/` 内单独放一份“重建所需字段清单”。
+8. **`/root/mcp/shx` 有未提交改动**：`.env`、`xray`、`geoip.dat`、`geosite.dat` 均被本地修改，`server_config.json` 等还未纳入该仓库版本控制。程序本体已被 `root-home.tar.gz` 覆盖，但该目录自身的 git 状态值得整理。
+9. **日志轮转**：`/var/log` 已达 200 MB，`vless-healthcheck.log` 每小时追加一行，建议配置 logrotate 上限。
+10. **BBR 已开启**，无需改动；`fail2ban` 规则与 `f2b-pscan` 表工作正常。
+
+### 文档
+
+11. 每台机器都应有本文件同款 `README.md`，并统一包含：服务清单、文件说明、下载方式、还原步骤。
+12. 新增机器时同步更新顶层 README 的机器列表与 Release 命名。
